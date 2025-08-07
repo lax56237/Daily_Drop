@@ -1,0 +1,111 @@
+/* Reset & Body Styling */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(0deg, #d46d4d, #c3cfe2);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Form Container */
+.create-seller-form {
+  background-color: #ffffff;
+  padding: 3.5rem 3rem;
+  border-radius: 24px;
+  max-width: 600px;
+  width: 195%;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.4s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* Heading */
+.create-seller-form h1 {
+  font-size: 2.3rem;
+  color: #222;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Labels */
+.input-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+/* Input Fields */
+.input-group input {
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 1.05rem;
+  background: #f9f9f9;
+  transition: 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #ff5722;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 87, 34, 0.3);
+}
+
+/* Button */
+.create-seller-form button {
+  padding: 1.1rem;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(to right, #ff512f, #dd2476);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 10px 20px rgba(255, 87, 34, 0.25);
+}
+
+.create-seller-form button:hover {
+  background: linear-gradient(to right, #dd2476, #ff512f);
+  transform: translateY(-3px);
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .create-seller-form {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .create-seller-form h1 {
+    font-size: 1.8rem;
+  }
+
+  .input-group input {
+    font-size: 1rem;
+  }
+}

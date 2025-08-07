@@ -1,0 +1,53 @@
+/* Address.css */
+
+/* Page Container */
+.address-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+.address-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 28px;
+}
+
+/* Input Fields */
+.address-container input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border 0.3s;
+}
+
+.address-container input:focus {
+  border-color: #2196f3;
+  outline: none;
+}
+
+/* Submit Button */
+.address-container button {
+  width: 100%;
+  padding: 14px;
+  background-color: #1976d2;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.address-container button:hover {
+  background-color: #0d47a1;
+}

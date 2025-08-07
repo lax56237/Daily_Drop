@@ -1,0 +1,71 @@
+/* Delivery.css */
+
+.delivery-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.delivery-container h2,
+.delivery-container h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.delivery-container button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delivery-container button:hover {
+  background-color: #388e3c;
+}
+
+.customer-info,
+.item-card {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-left: 4px solid #4caf50;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.customer-info ul,
+.item-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.customer-info li,
+.item-card li {
+  margin-bottom: 6px;
+}
+
+.item-card img {
+  width: 120px;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.item-card h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.item-card p,
+.customer-info p {
+  margin: 5px 0;
+}

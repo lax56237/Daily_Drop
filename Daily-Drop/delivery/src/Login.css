@@ -1,0 +1,81 @@
+/* Login Container */
+.login-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 40px;
+  background: linear-gradient(to bottom right, #fceabb, #f8b500);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Heading */
+.login-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 26px;
+}
+
+/* Input Wrapper for better alignment */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.input-group label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.login-container input:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.7);
+}
+
+/* Buttons (General Style) */
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease;
+}
+
+/* First Button - Create Account */
+.login-container button:first-of-type {
+  background-color: #ff9800;
+}
+
+.login-container button:first-of-type:hover {
+  background-color: #e65100;
+}
+
+/* Second Button - Login */
+.login-container button:last-of-type {
+  background-color: #4caf50;
+}
+
+.login-container button:last-of-type:hover {
+  background-color: #2e7d32;
+}

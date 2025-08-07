@@ -1,0 +1,73 @@
+/* Forgot.css */
+
+.forgot-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(0deg, #d46d4d, #c3cfe2);
+}
+
+.forgot-container {
+  background: #ffffff;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.forgot-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.forgot-container input {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.forgot-container input:focus {
+  outline: none;
+  background-color: #fff;
+  border-color: #ff758c;
+  box-shadow: 0 0 6px rgba(255, 117, 140, 0.3);
+}
+
+.forgot-container button {
+  padding: 1rem;
+  background: linear-gradient(0deg , #1db51d, #a6bbb4);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 6px 16px rgba(255, 117, 140, 0.3);
+}
+
+.forgot-container button:hover {
+  transform: translateY(-2px);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

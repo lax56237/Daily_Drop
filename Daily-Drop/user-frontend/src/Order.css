@@ -1,0 +1,154 @@
+.order-container {
+  padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  max-width: 900px;
+  margin: 40px auto;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.order-header .back-button {
+  padding: 10px 15px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.order-header .back-button:hover {
+  background-color: #545b62;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 50px;
+}
+
+.no-orders p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.continue-shopping {
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.continue-shopping:hover {
+  background-color: #0056b3;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.order-info {
+  margin-bottom: 15px;
+}
+
+.order-info h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.order-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.status-ready {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-ondelivery {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.status-delivered {
+  color: #6c757d;
+  font-weight: bold;
+}
+
+.order-items h4 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.order-items ul {
+  margin-left: 20px;
+}
+
+.order-items li {
+  margin-bottom: 5px;
+}
+
+.order-container h2 {
+  font-size: 28px;
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+.order-container h3 {
+  font-size: 22px;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.order-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.order-container li {
+  background-color: #fff;
+  margin-bottom: 10px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border-left: 5px solid #4caf50;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.order-container p {
+  color: #777;
+  font-style: italic;
+}
+
+.delivery_status {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #e0f2f1;
+  color: #00695c;
+  font-weight: bold;
+  text-align: center;
+}

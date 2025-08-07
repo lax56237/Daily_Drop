@@ -1,0 +1,30 @@
+=> first start all required files(react file and all server files)
+=> then path 1 : "C:\Users\patel\AppData\Local\ngrok\ngrok.yml"
+        path 2 : "C:\Users\patel\.ngrok2\ngrok.yml"
+        onen these two files in notepade
+=> then add all tunnels with their correct ports then save files
+=> after this win + r press then open cmd in on any path and run this command 
+   "ngrok start --all --config "C:\Users\patel\.ngrok2\ngrok.yml"
+=> aftrer this we get all links which all are alternative of our links
+=> all server (.js files) will work properly but react file eill not           
+=> for work react file copy react's port url which ngrok provides us
+   then open vite.config.js, past this url in origin and host part and save it, then react
+   also works.
+=> this is full vite.config.js (make sure this add when full project done!) 
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5175,
+    allowedHosts: ['all'],
+    origin: 'https://7406-2409-40c1-2013-a6d1-d9eb-a403-7eff-b4d8.ngrok-free.app',
+    hmr: {
+      protocol: 'wss',
+      host: '7406-2409-40c1-2013-a6d1-d9eb-a403-7eff-b4d8.ngrok-free.app',
+      clientPort: 443
+    }
+  }
+})
+   

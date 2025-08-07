@@ -1,0 +1,142 @@
+/* Reset and base styles */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(0deg, #d46d4d, #c3cfe2);
+}
+ 
+/* Flex container to center the form */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Form container */
+form {
+  background-color: #ffffff;
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeIn 0.6s ease-in-out;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Logo placement above form (optional) */
+form::before {
+  content: "";
+  background-image: url('/logo.png'); /* Replace with your actual logo path */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+}
+
+/* Form heading */
+form h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 1.5rem 0 0.5rem;
+  color: #333;
+}
+
+/* Input fields */
+form input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: 0.3s ease;
+  box-sizing: border-box;
+}
+
+form input:focus {
+  border-color: #26a69a;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(38, 166, 154, 0.25);
+  outline: none;
+}
+
+/* Submit button */
+form button {
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(to right, #26a69a, #00bfa5);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 8px 16px rgba(0, 191, 165, 0.2);
+}
+
+form button:hover {
+  background: linear-gradient(to right, #00bfa5, #26a69a);
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Optional login link */
+form .login-link {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  color: #555;
+}
+
+form .login-link a {
+  color: #00bfa5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+form .login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  form {
+    padding: 2rem 1.2rem;
+  }
+
+  form h1 {
+    font-size: 1.4rem;
+  }
+
+  form input, form button {
+    font-size: 0.95rem;
+  }
+}

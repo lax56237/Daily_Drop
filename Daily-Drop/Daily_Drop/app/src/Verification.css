@@ -1,0 +1,81 @@
+:root {
+  --primary: #ff5722;
+  --error: #e53935;
+  --white: #ffffff;
+  --text-dark: #333;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Full Page Layout */
+.verification-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(0deg, #d46d4d, #c3cfe2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Heading */
+.verification-page h2 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Input Field */
+.verification-page input {
+  width: 100%;
+  max-width: 320px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.verification-page input:focus {
+  border-color: var(--primary);
+}
+
+/* Button */
+.verification-page button {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.verification-page button:hover {
+  background-color: #e64a19;
+  transform: translateY(-2px);
+}
+
+/* Error Message */
+.error-msg {
+  color: var(--error);
+  margin-top: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .verification-page input {
+    width: 90%;
+  }
+
+  .verification-page h2 {
+    font-size: 1.5rem;
+  }
+}
