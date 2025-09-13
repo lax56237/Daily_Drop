@@ -1,11 +1,9 @@
-/* General Page Layout */
 .home-page {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
   background: linear-gradient(to right, #f7f7f7, #e2e2e2);
 }
 
-/* Header */
 .header {
   display: flex;
   align-items: center;
@@ -40,7 +38,6 @@
   background-color: #0056b3;
 }
 
-/* Search Bar */
 .search-container {
   position: relative;
   max-width: 600px;
@@ -71,7 +68,6 @@
   background-color: #1e7e34;
 }
 
-/* Suggestion Box */
 .suggestion-box {
   position: absolute;
   top: 100%;
@@ -95,7 +91,6 @@
   background-color: #f0f0f0;
 }
 
-/* Carousel */
 .carousel {
   overflow: hidden;
   margin: 40px 0;
@@ -120,7 +115,6 @@
   100% { transform: translateX(-50%); }
 }
 
-/* Categories */
 .top-categories h2,
 .top-products h2 {
   text-align: center;
@@ -152,7 +146,6 @@
   color: #fff;
 }
 
-/* Products */
 .product-rows {
   display: flex;
   flex-direction: column;

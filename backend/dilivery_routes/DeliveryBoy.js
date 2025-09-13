@@ -25,6 +25,4 @@ const deliveryBoySchema = new Schema({
     }
 });
 
-
-
 module.exports = mongoose.model("DeliveryBoy", deliveryBoySchema);

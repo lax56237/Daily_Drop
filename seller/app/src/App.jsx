@@ -10,8 +10,6 @@ import Products from './Products';
 import EditProfile from './EditProfile';
 import Orders from './Orders';
 import Verification from './Verification';
-// import './App.css';
-
 
 function App() {
   return (

@@ -1,30 +1,25 @@
-/* Container */
 .home-container {
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Welcome Message */
 .home-container h2 {
   font-size: 28px;
   color: #333;
   margin-bottom: 10px;
 }
 
-/* Available Orders Heading */
 .home-container h3 {
   font-size: 22px;
   margin-top: 30px;
   color: #444;
 }
 
-/* No Orders Text */
 .no-orders {
   font-style: italic;
   color: #888;
 }
 
-/* Order Card */
 .order-card {
   background: #f2faff;
   padding: 20px;
@@ -33,7 +28,6 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Take Order Button */
 .order-card button {
   background-color: #2196f3;
   color: white;
@@ -50,7 +44,6 @@
   background-color: #1976d2;
 }
 
-/* Item Card */
 .item-card {
   background-color: #ffffff;
   border: 1px solid #d9ecff;
@@ -66,7 +59,6 @@
   border-radius: 8px;
 }
 
-/* Seller Info */
 .seller-info {
   background-color: #eaf4ff;
   padding: 12px;

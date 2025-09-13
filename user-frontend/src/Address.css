@@ -1,6 +1,4 @@
-/* Address.css */
 
-/* Page Container */
 .address-container {
   max-width: 500px;
   margin: 40px auto;
@@ -10,7 +8,6 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading */
 .address-container h2 {
   text-align: center;
   color: #333;
@@ -18,7 +15,6 @@
   font-size: 28px;
 }
 
-/* Input Fields */
 .address-container input {
   width: 100%;
   padding: 12px 15px;
@@ -34,7 +30,6 @@
   outline: none;
 }
 
-/* Submit Button */
 .address-container button {
   width: 100%;
   padding: 14px;

@@ -131,7 +131,6 @@ router.post('/order', async (req, res) => {
 
       const sellerId = product.sellerId;
 
-      // Find or create seller order record
       let sellerOrder = await SellerOrder.findOne({ sellerId });
       if (!sellerOrder) {
         sellerOrder = new SellerOrder({ sellerId, orders: [] });

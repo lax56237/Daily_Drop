@@ -52,16 +52,13 @@ router.get('/orders', async (req, res) => {
         }
         
         if (deliveryBoy.delivery_status !== 'ready') {
-            // Check if they actually have an ordersheet before redirecting
             if (deliveryBoy.ordersheet) {
                 return res.status(200).json({ redirect: 'delivery', msg: 'Already on delivery', status: 'redirect' }); 
             } else {
-                // If no ordersheet but status is ondelivery, reset their status
                 await DeliveryBoy.findOneAndUpdate(
                     { name: req.session.deliveryName },
                     { delivery_status: 'ready', order_id: null, ordersheet: null }
                 );
-                // Continue to show orders normally
             }
         }
 
@@ -112,7 +109,6 @@ router.put('/take-order', async (req, res) => {
     try {
         await Order.findByIdAndUpdate(orderId, { delivery_status: 'ondelivery' });
         
-        // Update seller orders to ondelivery status
         await SellerOrder.updateMany(
             { order_id: orderId },
             { delivery_status: 'ondelivery' }
@@ -179,7 +175,6 @@ router.post('/store-ordersheet', async (req, res) => {
             items: itemsWithDetails.filter(Boolean)
         };
 
-        // Store ordersheet in delivery boy model
         await DeliveryBoy.findOneAndUpdate(
             { name: deliveryName },
             { ordersheet: orderSheet }
@@ -332,7 +327,6 @@ router.post('/success_delivery', async (req, res) => {
 
         await Order.findByIdAndUpdate(orderId, { delivery_status: 'delivered' });
 
-        // Update seller orders to delivered status
         await SellerOrder.updateMany(
             { order_id: orderId },
             { delivery_status: 'delivered' }

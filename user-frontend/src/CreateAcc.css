@@ -1,4 +1,3 @@
-/* Background Wrapper */
 .signup-wrapper {
   display: flex;
   justify-content: center;
@@ -7,7 +6,6 @@
   background: linear-gradient(0deg, #d46d4d, #c3cfe2);
 }
 
-/* Signup Box */
 .signup-container {
   background: #fff;
   padding: 3rem 2rem;
@@ -22,7 +20,6 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Heading Styles */
 .signup-container h2 {
   text-align: center;
   font-size: 2rem;
@@ -37,7 +34,6 @@
   margin-bottom: 1rem;
 }
 
-/* Input Fields */
 .signup-container input {
   padding: 1rem;
   border: 1px solid #ccc;
@@ -54,7 +50,6 @@
   box-shadow: 0 0 8px rgba(241, 39, 17, 0.2);
 }
 
-/* Signup Button */
 .signup-container button {
   padding: 1rem;
   background: linear-gradient(0deg, #9497c0, #476eb2);
@@ -72,7 +67,6 @@
   transform: translateY(-2px);
 }
 
-/* Fade-in Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;

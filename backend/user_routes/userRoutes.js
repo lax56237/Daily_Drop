@@ -146,7 +146,6 @@ router.get('/cart', async (req, res) => {
         const user = await User.findById(req.session.userId);
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
-        // Find user's cart (simple shopping cart)
         const cart = await Cart.findOne({ email: user.email });
         if (!cart) return res.json({ items: [], totalPrice: 0 });
 
@@ -185,10 +184,8 @@ router.post('/cart/add', async (req, res) => {
         let cart = await Cart.findOne({ email });
 
         if (!cart) {
-            // No existing cart, create new one
             cart = new Cart({ email, items, totalPrice }); 
         } else {
-            // Existing cart found, add items to it
             items.forEach(newItem => {
                 const existing = cart.items.find(i => i.name === newItem.name);
                 if (existing) {
@@ -223,25 +220,19 @@ router.post('/place-order', async (req, res) => {
 
         console.log('User found:', user.email);
 
-        // Check if address is provided in request body
         const { address } = req.body;
         
         if (!address || !address.name || !address.street || !address.phone || !address.pincode || !address.city || !address.state) {
             return res.status(400).json({ msg: 'Please provide complete delivery address' });
         }
 
-        // Update user's address in database
         await User.findByIdAndUpdate(req.session.userId, { address });
 
-        // Find user's cart
         const cart = await Cart.findOne({ email: user.email });
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({ msg: 'Cart is empty' });
         }
 
-        console.log('Cart found with items:', cart.items.length);
-
-        // Create order from cart
         const order = new Order({
             email: user.email,
             items: cart.items,
@@ -250,9 +241,7 @@ router.post('/place-order', async (req, res) => {
         });
 
         await order.save();
-        console.log('Order created:', order._id);
 
-        // Create seller order entries for each item
         for (const item of cart.items) {
             try {
                 const product = await Product.findOne({ name: item.name });
@@ -276,7 +265,6 @@ router.post('/place-order', async (req, res) => {
             }
         }
 
-        // Clear the cart after placing order
         await Cart.findOneAndDelete({ email: user.email });
 
         res.json({ msg: 'Order placed successfully', orderId: order._id });

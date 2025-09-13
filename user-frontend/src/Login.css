@@ -1,4 +1,3 @@
-/* Body Reset */
 body {
   margin: 0;
   padding: 0;
@@ -7,7 +6,6 @@ body {
   min-height: 100vh;
 }
 
-/* Page Wrapper */
 .login-wrapper {
   display: flex;
   justify-content: center;
@@ -15,7 +13,6 @@ body {
   min-height: 100vh;
 }
 
-/* Login Container */
 .login-container {
   background: #fff;
   padding: 3rem 2rem;
@@ -30,7 +27,6 @@ body {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Heading */
 h2 {
   text-align: center;
   font-size: 2rem;
@@ -38,7 +34,6 @@ h2 {
   margin-bottom: 1rem;
 }
 
-/* Inputs */
 input {
   padding: 1rem;
   border: 1px solid #ccc;
@@ -55,7 +50,6 @@ input:focus {
   box-shadow: 0 0 8px rgba(241, 39, 17, 0.2);
 }
 
-/* Button */
 button {
   padding: 1rem;
   background: linear-gradient(0deg, #d46d4d, #c3cfe2);
@@ -73,7 +67,6 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* Navigation Paragraphs */
 p {
   text-align: center;
   color: #444;
@@ -88,7 +81,6 @@ p:hover {
   text-decoration: underline;
 }
 
-/* Fade-in Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
