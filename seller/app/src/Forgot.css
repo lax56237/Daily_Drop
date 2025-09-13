@@ -1,0 +1,78 @@
+.forgot-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 20px;
+}
+
+.forgot-box {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  border: 1px solid rgba(252, 182, 159, 0.2);
+}
+
+.forgot-box h1 {
+  color: #d63031;
+  margin-bottom: 35px;
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #d63031, #e17055);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.forgot-box input {
+  width: 100%;
+  padding: 16px;
+  margin: 12px 0;
+  border: 2px solid #ffeaa7;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: #fff5f5;
+}
+
+.forgot-box input:focus {
+  outline: none;
+  border-color: #e17055;
+  box-shadow: 0 0 0 3px rgba(225, 112, 85, 0.1);
+  background: white;
+}
+
+.forgot-box input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.forgot-box button {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 8px 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(225, 112, 85, 0.3);
+}
+
+.forgot-box button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(225, 112, 85, 0.4);
+}
+
+.forgot-box button:active {
+  transform: translateY(-1px);
+}
