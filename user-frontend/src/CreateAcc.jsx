@@ -26,9 +26,9 @@ function Signup() {
 
         const data = await res.json();
         if (res.ok) {
-            setServerOtp(data.otp); 
+            setServerOtp(data.otp);
             setOtpSent(true);
-            alert("OTP sent to your email"); 
+            alert("OTP sent to your email");
         } else {
             alert(data.msg || "Failed to send OTP");
         }

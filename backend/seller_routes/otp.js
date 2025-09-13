@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const nm = require('nodemailer');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 function sendOtp(name) {
     return new Promise((resolve, reject) => {
@@ -10,13 +12,13 @@ function sendOtp(name) {
             port: 465,
             secure: true,
             auth: {
-                user: "lax56237@gmail.com",
-                pass: "kafd ovwn cnho rbkp" 
+                user: process.env.USER,
+                pass: process.env.PASSWORD, 
             }
         });
         const otp = Math.floor(1000 + Math.random() * 9000);
         const mailOptions = {
-            from: "lax56237@gmail.com",
+            from: process.env.USER,
             to: name,
             subject: "Your OTP",
             text: String(otp)

@@ -7,6 +7,8 @@ const Product = require('../seller_routes/Product');
 const SellerDetail = require('../seller_routes/sellerDetail');
 const nodemailer = require('nodemailer');
 const SellerOrder = require('../seller_routes/sellerOrder');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 const otpMap = new Map();
 
@@ -283,8 +285,8 @@ router.post('/send-otp', async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'lax56237@gmail.com',
-            pass: 'kafd ovwn cnho rbkp',
+            user: process.env.USER,
+            pass: process.env.password,
         },
     });
 

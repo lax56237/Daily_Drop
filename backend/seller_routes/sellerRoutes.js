@@ -211,13 +211,11 @@ router.get('/get-orders', async (req, res) => {
         const sellerId = req.session.user?.sellerId;
         if (!sellerId) return res.status(401).json({ error: 'Seller not logged in' });
 
-        // Only fetch orders that are NOT delivered (ready or ondelivery)
         const orders = await SellerOrder.find({ 
             sellerId, 
             delivery_status: { $ne: 'delivered' } 
         }).sort({ _id: -1 });
         
-        // Populate order details for better information
         const ordersWithDetails = await Promise.all(orders.map(async (order) => {
             const orderDetails = await Order.findById(order.order_id);
             return {
@@ -241,10 +239,8 @@ router.get('/order-history', async (req, res) => {
         const sellerId = req.session.user?.sellerId;
         if (!sellerId) return res.status(401).json({ error: 'Seller not logged in' });
 
-        // Fetch ALL orders including delivered ones for history
         const orders = await SellerOrder.find({ sellerId }).sort({ _id: -1 });
         
-        // Populate order details for better information
         const ordersWithDetails = await Promise.all(orders.map(async (order) => {
             const orderDetails = await Order.findById(order.order_id);
             return {
