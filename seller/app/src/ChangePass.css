@@ -62,7 +62,6 @@
   border-radius: 20px 20px 0 0;
 }
 
-/* Header Section */
 .changepass-header {
   text-align: center;
   margin-bottom: 35px;
@@ -104,7 +103,6 @@
   margin: 0;
 }
 
-/* Form Section */
 .changepass-form {
   margin-bottom: 35px;
 }
@@ -160,7 +158,6 @@
   font-style: italic;
 }
 
-/* Password Toggle */
 .password-toggle {
   position: absolute;
   right: 16px;
@@ -177,7 +174,6 @@
   opacity: 1;
 }
 
-/* Password Requirements */
 .password-requirements {
   background: #f7fafc;
   border: 2px solid #e2e8f0;
@@ -226,7 +222,6 @@
   color: #38a169;
 }
 
-/* Change Button */
 .change-btn {
   width: 100%;
   padding: 18px;
@@ -281,7 +276,6 @@
   pointer-events: none;
 }
 
-/* Loading Spinner */
 .loading-spinner {
   width: 18px;
   height: 18px;
@@ -300,7 +294,6 @@
   font-size: 16px;
 }
 
-/* Error Message */
 .error-message {
   display: flex;
   align-items: center;
@@ -332,7 +325,6 @@
   flex-shrink: 0;
 }
 
-/* Footer Section */
 .changepass-footer {
   border-top: 1px solid #e2e8f0;
   padding-top: 25px;
@@ -400,7 +392,6 @@
   color: #5a67d8;
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
   .changepass-container {
     padding: 20px 16px;

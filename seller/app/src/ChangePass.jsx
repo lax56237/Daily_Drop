@@ -22,13 +22,12 @@ function ChangePass() {
             ...prev,
             [field]: value
         }));
-        setError(''); // Clear error when user starts typing
+        setError(''); 
     };
 
     const handleChangePassword = async () => {
         const { newPassword, confirmPassword } = formData;
 
-        // Validation
         if (!newPassword || !confirmPassword) {
             setError('Please fill in both password fields');
             return;
@@ -48,10 +47,8 @@ function ChangePass() {
         setError('');
 
         try {
-            // Simulate API call - replace with actual endpoint
             await new Promise(resolve => setTimeout(resolve, 1500));
 
-            // On success, navigate back to login
             navigate("/");
         } catch (err) {
             console.error('Password change error:', err);

@@ -174,7 +174,6 @@ function CreateAcc() {
                         )}
                     </div>
 
-                    {/* OTP Verification Step */}
                     {otpSent && !verified && (
                         <div className="form-step active">
                             <div className="step-info">
@@ -206,7 +205,6 @@ function CreateAcc() {
                         </div>
                     )}
 
-                    {/* Password Step */}
                     {verified && (
                         <div className="form-step active">
                             <div className="step-info success">

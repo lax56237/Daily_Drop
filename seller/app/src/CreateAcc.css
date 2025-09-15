@@ -62,7 +62,6 @@
   border-radius: 20px 20px 0 0;
 }
 
-/* Header Section */
 .account-header {
   text-align: center;
   margin-bottom: 35px;
@@ -111,7 +110,6 @@
   margin: 0;
 }
 
-/* Progress Bar */
 .progress-bar {
   display: flex;
   justify-content: center;
@@ -177,7 +175,6 @@
   font-weight: 600;
 }
 
-/* Form Section */
 .account-form {
   margin-bottom: 30px;
 }
@@ -240,7 +237,6 @@
   font-size: 13px;
 }
 
-/* Input Groups */
 .input-group {
   margin-bottom: 25px;
 }
@@ -291,7 +287,6 @@
   font-style: italic;
 }
 
-/* Password Requirements */
 .password-requirements {
   background: #fffaf0;
   border: 2px solid #feb2b2;
@@ -329,7 +324,6 @@
   font-weight: bold;
 }
 
-/* Buttons */
 .action-btn {
   width: 100%;
   padding: 18px;
@@ -388,7 +382,6 @@
   pointer-events: none;
 }
 
-/* Loading Spinner */
 .loading-spinner {
   width: 18px;
   height: 18px;
@@ -407,7 +400,6 @@
   font-size: 16px;
 }
 
-/* Error Message */
 .error-message {
   display: flex;
   align-items: center;
@@ -439,7 +431,6 @@
   flex-shrink: 0;
 }
 
-/* Footer */
 .account-footer {
   text-align: center;
   padding-top: 25px;
@@ -467,7 +458,6 @@
   color: #5a67d8;
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
   .create-account-container {
     padding: 20px 16px;

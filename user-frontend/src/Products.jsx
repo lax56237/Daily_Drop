@@ -1,16 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './Products.css';
-import { useNavigate } from 'react-router-dom';
 
 function Products() {
     const location = useLocation();
+    const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const searchName = queryParams.get('name');
+    
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const [showCartPopup, setShowCartPopup] = useState(false);
     const [cart, setCart] = useState([]);
     const [showAddressForm, setShowAddressForm] = useState(false);
+    const [orderLoading, setOrderLoading] = useState(false);
+    const [cartLoading, setCartLoading] = useState(false);
+    
     const [address, setAddress] = useState({
         name: "",
         phone: "",
@@ -20,25 +26,81 @@ function Products() {
         state: "",
         landmark: ""
     });
+    
     const userEmail = sessionStorage.getItem("email");
-    const navigate = useNavigate();
-
-    const [position, setPosition] = useState({ x: 1000, y: 100 });
+    
+    // Cart popup dragging functionality
+    const [position, setPosition] = useState({ x: window.innerWidth - 370, y: 100 });
     const [dragging, setDragging] = useState(false);
     const offset = useRef({ x: 0, y: 0 });
     const popupRef = useRef(null);
 
     useEffect(() => {
-        if (searchName) {
-            fetch(`http://localhost:5000/products/search-full?q=${searchName}`)
-                .then(res => res.json())
-                .then(data => setProducts(data))
-                .catch(() => setProducts([]));
+        checkSessionAndFetchProducts();
+        loadUserAddress();
+    }, [searchName, navigate]);
+
+    const checkSessionAndFetchProducts = async () => {
+        try {
+            const sessionResponse = await fetch('http://localhost:5000/user/check-session', {
+                credentials: 'include'
+            });
+            const sessionData = await sessionResponse.json();
+
+            if (sessionData.msg === 'Logged in') {
+                await fetchProducts();
+            } else {
+                navigate('/');
+            }
+        } catch (err) {
+            console.error('Session check error:', err);
+            setError('Session expired. Please login again.');
+            setTimeout(() => navigate('/'), 2000);
+        }
+    };
+
+    const fetchProducts = async () => {
+        if (!searchName) {
+            setProducts([]);
+            setLoading(false);
+            return;
         }
 
-    }, [searchName]);
+        try {
+            const response = await fetch(`http://localhost:5000/products/search-full?q=${searchName}`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                setProducts(data || []);
+            } else {
+                setError('Failed to load products');
+                setProducts([]);
+            }
+        } catch (err) {
+            setError('Network error. Please try again.');
+            setProducts([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const loadUserAddress = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/user/address', {
+                credentials: 'include'
+            });
+            const data = await response.json();
+
+            if (data.address && data.address.name) {
+                setAddress(data.address);
+            }
+        } catch (err) {
+            console.error('Error loading address:', err);
+        }
+    };
 
     const fetchCartFromDatabase = async () => {
+        setCartLoading(true);
         try {
             const response = await fetch('http://localhost:5000/user/cart', {
                 credentials: 'include'
@@ -51,14 +113,14 @@ function Products() {
                     return product ? { ...product, quantity: item.quantity } : null;
                 }).filter(Boolean);
                 setCart(cartItems);
-                console.log('Cart loaded from database:', cartItems);
             } else {
                 setCart([]);
-                console.log('No items in cart or error loading cart');
             }
         } catch (error) {
             console.error('Error fetching cart from database:', error);
             setCart([]);
+        } finally {
+            setCartLoading(false);
         }
     };
 
@@ -68,19 +130,7 @@ function Products() {
         }
     }, [products]);
 
-    useEffect(() => {
-        fetch('http://localhost:5000/user/address', {
-            credentials: 'include'
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.address && data.address.name) {
-                setAddress(data.address);
-            }
-        })
-        .catch(err => console.error('Error loading address:', err));
-    }, []);
-
+    // Dragging functionality
     const startDrag = (e) => {
         setDragging(true);
         const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
@@ -133,14 +183,13 @@ function Products() {
             });
 
             if (response.ok) {
-               
                 await fetchCartFromDatabase();
                 setShowCartPopup(true);
             } else {
-                console.error('Failed to add item to cart');
+                setError('Failed to add item to cart');
             }
         } catch (error) {
-            console.error('Error adding to cart:', error);
+            setError('Error adding to cart: ' + error.message);
         }
     };
 
@@ -177,30 +226,49 @@ function Products() {
         }
     };
 
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
     const handleAddressChange = (field, value) => {
         setAddress(prev => ({ ...prev, [field]: value }));
+        setError('');
     };
 
-    const handleOrder = async () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty!');
-            return;
+    const validateAddress = () => {
+        const requiredFields = ['name', 'phone', 'pincode', 'street', 'city', 'state'];
+        const emptyFields = requiredFields.filter(field => !address[field]?.trim());
+
+        if (emptyFields.length > 0) {
+            setError('Please fill in all required fields');
+            return false;
         }
 
+        if (address.phone.length < 10) {
+            setError('Please enter a valid phone number');
+            return false;
+        }
+
+        if (address.pincode.length !== 6) {
+            setError('Please enter a valid 6-digit pincode');
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleOrder = () => {
+        if (cart.length === 0) {
+            setError('Your cart is empty!');
+            return;
+        }
         setShowAddressForm(true);
+        setError('');
     };
 
     const confirmOrder = async () => {
-        if (!address.name || !address.phone || !address.pincode || !address.street || !address.city || !address.state) {
-            alert('Please fill all required address fields');
-            return;
-        }
+        if (!validateAddress()) return;
+
+        setOrderLoading(true);
+        setError('');
 
         try {
-            console.log('Attempting to place order from Products page...');
-            
             const response = await fetch('http://localhost:5000/user/place-order', {
                 method: 'POST',
                 headers: {
@@ -210,148 +278,356 @@ function Products() {
                 body: JSON.stringify({ address })
             });
             
-            console.log('Place order response status:', response.status);
             const data = await response.json();
-            console.log('Place order response data:', data);
 
             if (response.ok) {
-                alert('Order placed successfully!');
                 setCart([]);
                 setShowCartPopup(false);
                 setShowAddressForm(false);
                 navigate('/order');
             } else {
-                alert(data.msg || 'Failed to place order');
+                setError(data.msg || 'Failed to place order');
             }
         } catch (error) {
-            console.error('Error placing order:', error);
-            alert('Failed to place order: ' + error.message);
+            setError('Failed to place order: ' + error.message);
+        } finally {
+            setOrderLoading(false);
         }
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && showAddressForm) {
+            confirmOrder();
+        }
+    };
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    if (loading) {
+        return (
+            <div className="products-container">
+                <div className="loading-state">
+                    <div className="loading-spinner"></div>
+                    <p>Loading products...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <>
+        <div className="products-container">
             <div className="products-header">
-                <button onClick={() => navigate('/home')} className="back-button">← Back to Home</button>
-                <button onClick={() => {
-                    fetchCartFromDatabase();
-                    setShowCartPopup(true);
-                }}>View Cart</button>
+                <button onClick={() => navigate('/home')} className="back-button">
+                    <span className="btn-icon">←</span>
+                    Back to Shop
+                </button>
+                <div className="header-content">
+                    <h1 className="page-title">Search Results</h1>
+                    <p className="search-info">
+                        {searchName ? `Results for "${searchName}" (${products.length} found)` : 'No search query'}
+                    </p>
+                </div>
+                <button 
+                    className="cart-button"
+                    onClick={() => {
+                        fetchCartFromDatabase();
+                        setShowCartPopup(true);
+                    }}
+                >
+                    <span className="btn-icon">🛒</span>
+                    Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+                </button>
             </div>
-            <div className="product-grid">
-                {products.map((p, i) => (
-                    <div className="product-card" key={i}>
-                        <img src={p.imageUrl} className="product-img" alt={p.name} />
-                        <h3>{p.name}</h3>
-                        <p>{p.description || ""}</p>
-                        <p><strong>Weight:</strong> {p.weight}</p>
-                        <p><strong>Price:</strong> ₹{p.price}</p>
-                        <button onClick={() => addToCart(p)}>Add to Cart</button>
-                    </div>
-                ))}
 
-                {showCartPopup && (
+            {error && (
+                <div className="error-message">
+                    <span className="error-icon">⚠️</span>
+                    <span>{error}</span>
+                </div>
+            )}
+
+            {products.length === 0 ? (
+                <div className="empty-products">
+                    <div className="empty-icon">🔍</div>
+                    <h2>No products found</h2>
+                    <p>{searchName ? `No results for "${searchName}"` : 'Try searching for something specific'}</p>
+                    <button onClick={() => navigate('/home')} className="continue-shopping">
+                        <span className="btn-icon">🛍️</span>
+                        Browse All Products
+                    </button>
+                </div>
+            ) : (
+                <div className="products-content">
+                    <div className="product-grid">
+                        {products.map((product, index) => (
+                            <div className="product-card" key={index}>
+                                <div className="product-image-container">
+                                    <img src={product.imageUrl} className="product-image" alt={product.name} />
+                                </div>
+                                <div className="product-info">
+                                    <h3 className="product-name">{product.name}</h3>
+                                    {product.description && (
+                                        <p className="product-description">{product.description}</p>
+                                    )}
+                                    <div className="product-details">
+                                        <div className="product-weight">
+                                            <span className="detail-icon">⚖️</span>
+                                            <span>{product.weight}</span>
+                                        </div>
+                                        <div className="product-price">
+                                            <span className="price">₹{product.price}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button 
+                                    className="add-to-cart-btn"
+                                    onClick={() => addToCart(product)}
+                                >
+                                    <span className="btn-icon">🛒</span>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {showCartPopup && (
+                <div
+                    className="cart-popup"
+                    style={{ top: position.y, left: position.x }}
+                    ref={popupRef}
+                >
                     <div
-                        className="cart-popup"
-                        style={{ top: position.y, left: position.x }}
-                        ref={popupRef}
+                        className="cart-drag-handle"
+                        onMouseDown={startDrag}
+                        onTouchStart={startDrag}
                     >
-                        <div
-                            className="cart-drag-bar"
-                            onMouseDown={startDrag}
-                            onTouchStart={startDrag}
-                        ></div>
-                        <div className="cart-popup-content">
-                            <h2>Cart</h2>
-                            {cart.length === 0 ? (
-                                <p>Cart is empty</p>
-                            ) : (
-                                <>
+                        <div className="drag-indicator"></div>
+                        <span className="drag-text">Drag to move</span>
+                    </div>
+                    
+                    <div className="cart-popup-content">
+                        <div className="cart-header">
+                            <h3 className="cart-title">
+                                <span className="cart-icon">🛒</span>
+                                Your Cart
+                            </h3>
+                            <button 
+                                className="close-cart-btn"
+                                onClick={() => setShowCartPopup(false)}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        {cartLoading ? (
+                            <div className="cart-loading">
+                                <div className="loading-spinner-small"></div>
+                                <p>Loading cart...</p>
+                            </div>
+                        ) : cart.length === 0 ? (
+                            <div className="empty-cart-popup">
+                                <div className="empty-cart-icon">🛒</div>
+                                <p>Your cart is empty</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="cart-items">
                                     {cart.map(item => (
                                         <div key={item._id} className="cart-item">
-                                            <img src={item.imageUrl} className="cart-img" alt={item.name} />
-                                            <div className="cart-details">
-                                                <h4>{item.name}</h4>
-                                                <p>₹{item.price} × {item.quantity}</p>
-                                                <div>
-                                                    <button onClick={() => updateQuantity(item._id, -1)}>-</button>
-                                                    <span style={{ margin: '0 8px' }}>{item.quantity}</span>
-                                                    <button onClick={() => updateQuantity(item._id, 1)}>+</button>
+                                            <img src={item.imageUrl} className="cart-item-image" alt={item.name} />
+                                            <div className="cart-item-details">
+                                                <h4 className="cart-item-name">{item.name}</h4>
+                                                <p className="cart-item-price">₹{item.price} × {item.quantity}</p>
+                                                <div className="quantity-controls">
+                                                    <button 
+                                                        className="quantity-btn decrease"
+                                                        onClick={() => updateQuantity(item._id, -1)}
+                                                    >
+                                                        −
+                                                    </button>
+                                                    <span className="quantity-display">{item.quantity}</span>
+                                                    <button 
+                                                        className="quantity-btn increase"
+                                                        onClick={() => updateQuantity(item._id, 1)}
+                                                    >
+                                                        +
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     ))}
-                                    <hr />
-                                    <h3>Total: ₹{total}</h3>
-                                    <button className="order-btn" onClick={handleOrder}>Order</button>
-                                </>
-                            )}
-                            <button onClick={() => setShowCartPopup(false)}>Close</button>
-                        </div>
+                                </div>
+                                
+                                <div className="cart-summary">
+                                    <div className="cart-total">
+                                        <span className="total-label">Total Amount:</span>
+                                        <span className="total-price">₹{total}</span>
+                                    </div>
+                                    <button className="place-order-btn" onClick={handleOrder}>
+                                        <span className="btn-icon">🚀</span>
+                                        Place Order
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </div>
-                )}
+                </div>
+            )}
 
-                {showAddressForm && (
-                    <div className="address-form-overlay">
-                        <div className="address-form">
+            {showAddressForm && (
+                <div className="address-form-overlay">
+                    <div className="address-form">
+                        <div className="form-header">
                             <h3>Delivery Address</h3>
-                            <input
-                                type="text"
-                                placeholder="Full Name *"
-                                value={address.name}
-                                onChange={e => handleAddressChange("name", e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Phone Number *"
-                                value={address.phone}
-                                onChange={e => handleAddressChange("phone", e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Pincode *"
-                                value={address.pincode}
-                                onChange={e => handleAddressChange("pincode", e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Area / Street *"
-                                value={address.street}
-                                onChange={e => handleAddressChange("street", e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="City *"
-                                value={address.city}
-                                onChange={e => handleAddressChange("city", e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="State *"
-                                value={address.state}
-                                onChange={e => handleAddressChange("state", e.target.value)}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Landmark (Optional)"
-                                value={address.landmark}
-                                onChange={e => handleAddressChange("landmark", e.target.value)}
-                            />
-                            <div className="address-form-buttons">
-                                <button onClick={() => setShowAddressForm(false)} className="cancel-button">
-                                    Cancel
-                                </button>
-                                <button onClick={confirmOrder} className="confirm-button">
-                                    Confirm Order
-                                </button>
+                            <button
+                                className="close-btn"
+                                onClick={() => setShowAddressForm(false)}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        <div className="form-body">
+                            <div className="input-row">
+                                <div className="input-group">
+                                    <label>Full Name *</label>
+                                    <div className="input-wrapper">
+                                        <span className="input-icon">👤</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter your full name"
+                                            value={address.name}
+                                            onChange={e => handleAddressChange("name", e.target.value)}
+                                            onKeyPress={handleKeyPress}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="input-group">
+                                    <label>Phone Number *</label>
+                                    <div className="input-wrapper">
+                                        <span className="input-icon">📱</span>
+                                        <input
+                                            type="tel"
+                                            placeholder="10-digit mobile number"
+                                            value={address.phone}
+                                            onChange={e => handleAddressChange("phone", e.target.value)}
+                                            onKeyPress={handleKeyPress}
+                                            maxLength="10"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="input-group">
+                                <label>Area / Street Address *</label>
+                                <div className="input-wrapper">
+                                    <span className="input-icon">🏠</span>
+                                    <input
+                                        type="text"
+                                        placeholder="House no, Building, Street"
+                                        value={address.street}
+                                        onChange={e => handleAddressChange("street", e.target.value)}
+                                        onKeyPress={handleKeyPress}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="input-row">
+                                <div className="input-group">
+                                    <label>City *</label>
+                                    <div className="input-wrapper">
+                                        <span className="input-icon">🏙️</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter city"
+                                            value={address.city}
+                                            onChange={e => handleAddressChange("city", e.target.value)}
+                                            onKeyPress={handleKeyPress}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="input-group">
+                                    <label>Pincode *</label>
+                                    <div className="input-wrapper">
+                                        <span className="input-icon">📮</span>
+                                        <input
+                                            type="text"
+                                            placeholder="6-digit pincode"
+                                            value={address.pincode}
+                                            onChange={e => handleAddressChange("pincode", e.target.value)}
+                                            onKeyPress={handleKeyPress}
+                                            maxLength="6"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="input-row">
+                                <div className="input-group">
+                                    <label>State *</label>
+                                    <div className="input-wrapper">
+                                        <span className="input-icon">🗺️</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter state"
+                                            value={address.state}
+                                            onChange={e => handleAddressChange("state", e.target.value)}
+                                            onKeyPress={handleKeyPress}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="input-group">
+                                    <label>Landmark (Optional)</label>
+                                    <div className="input-wrapper">
+                                        <span className="input-icon">📌</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Nearby landmark"
+                                            value={address.landmark}
+                                            onChange={e => handleAddressChange("landmark", e.target.value)}
+                                            onKeyPress={handleKeyPress}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            </div>
-        </>
 
+                        <div className="form-footer">
+                            <button
+                                onClick={() => setShowAddressForm(false)}
+                                className="cancel-button"
+                                disabled={orderLoading}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmOrder}
+                                className={`confirm-button ${orderLoading ? 'loading' : ''}`}
+                                disabled={orderLoading}
+                            >
+                                {orderLoading ? (
+                                    <>
+                                        <span className="loading-spinner"></span>
+                                        Placing Order...
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="btn-icon">✅</span>
+                                        Confirm Order
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
 
