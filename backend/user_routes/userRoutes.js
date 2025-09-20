@@ -44,17 +44,17 @@ router.get('/check-session', async (req, res) => {
         if (!req.session.userId) {
             return res.status(401).json({ msg: 'Not logged in', session: req.session });
         }
-        
+
         const user = await User.findById(req.session.userId);
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
-        
-        res.json({ 
-            msg: 'Logged in', 
-            email: user.email, 
+
+        res.json({
+            msg: 'Logged in',
+            email: user.email,
             userId: req.session.userId,
-            session: req.session 
+            session: req.session
         });
     } catch (err) {
         console.error("Session Check Error:", err);
@@ -112,7 +112,7 @@ router.post('/send-otp-create', async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-             user: process.env.USER,
+            user: process.env.USER,
             pass: process.env.PASSWORD,
         },
     });
@@ -125,7 +125,7 @@ router.post('/send-otp-create', async (req, res) => {
             text: `Your OTP is ${otp}`,
         });
 
-        res.json({ otp }); 
+        res.json({ otp });
     } catch (err) {
         console.error('Error sending mail:', err);
         res.status(500).json({ msg: 'Failed to send OTP' });
@@ -165,7 +165,7 @@ router.get('/orders', async (req, res) => {
         if (!user) return res.status(404).json({ msg: 'User not found' });
 
         const orders = await Order.find({ email: user.email }).sort({ orderDate: -1 });
-        
+
         res.json({ orders });
     } catch (err) {
         console.error("Orders Fetch Error:", err);
@@ -184,7 +184,7 @@ router.post('/cart/add', async (req, res) => {
         let cart = await Cart.findOne({ email });
 
         if (!cart) {
-            cart = new Cart({ email, items, totalPrice }); 
+            cart = new Cart({ email, items, totalPrice });
         } else {
             items.forEach(newItem => {
                 const existing = cart.items.find(i => i.name === newItem.name);
@@ -198,7 +198,7 @@ router.post('/cart/add', async (req, res) => {
         }
 
         await cart.save();
-        res.json({ msg: 'Cart saved' , cart});
+        res.json({ msg: 'Cart saved', cart });
     } catch (err) {
         console.error("Cart Add Error:", err);
         res.status(500).json({ msg: 'Server error' });
@@ -207,21 +207,18 @@ router.post('/cart/add', async (req, res) => {
 
 router.post('/place-order', async (req, res) => {
     try {
-        console.log('Place order request - Session:', req.session);
-        
+
         if (!req.session.userId) {
             return res.status(401).json({ msg: 'Not logged in - No session userId' });
         }
-        
+
         const user = await User.findById(req.session.userId);
         if (!user) {
             return res.status(404).json({ msg: 'User not found for session userId' });
         }
 
-        console.log('User found:', user.email);
-
         const { address } = req.body;
-        
+
         if (!address || !address.name || !address.street || !address.phone || !address.pincode || !address.city || !address.state) {
             return res.status(400).json({ msg: 'Please provide complete delivery address' });
         }
@@ -255,10 +252,10 @@ router.post('/place-order', async (req, res) => {
                         itemName: item.name,
                         quantity: item.quantity,
                         order_id: order._id,
-                        delivery_status: 'ready'
+                        delivery_status: 'ready',
                     });
                     await sellerOrder.save();
-                    console.log('Seller order created for:', item.name);
+                    await Product.findOneAndUpdate({ name: item.name }, { $inc: { sellCount: item.quantity } })
                 }
             } catch (error) {
                 console.error('Error creating seller order for item:', item.name, error);

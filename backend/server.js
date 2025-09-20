@@ -29,6 +29,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+
 app.use(session({
     secret: 'my-secret-key',
     resave: false,
